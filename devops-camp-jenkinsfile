@@ -6,7 +6,7 @@ pipeline {
         stage('Application repository') {
             steps {
                 echo "Cloning application repository"
-                sh 'git clone https://github.com/firemeadow/devops-camp-pipeline.git'
+                sh 'git clone https://github.com/ktorres2017/afs-labs-student.git'
             }
         }
         stage('Application docker build') {
