@@ -17,10 +17,10 @@ pipeline {
                 dir('afs-labs-student') {
                     script{
                         env.APP_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                             }
-                        }
                     }
-            }
+                }
+             }
+        }
         stage('Application docker build') {
             steps {
                 echo "Building application image"
@@ -30,27 +30,27 @@ pipeline {
                         docker.withRegistry('https://$HARBOR_REGISTRY', 'ktorres-harbor-auth') {
                             sh 'docker tag $APP_IMAGE_NAME-$APP_HASH $HARBOR_REGISTRY/$HARBOR_PROJECT/$APP_IMAGE_NAME:$APP_HASH-$PIPELINE_HASH'
                             sh 'docker push $HARBOR_REGISTRY/$HARBOR_PROJECT/$APP_IMAGE_NAME:$APP_HASH-$PIPELINE_HASH'
-                         }
-                     } 
-                  }
-             }
+                        }
+                    } 
+                }
+              }
               post {
                 always {
                     echo "Clean local $APP_IMAGE_NAME image"
                     script {
-                    try {
-                        sh 'docker rmi $APP_IMAGE_NAME-$APP_HASH:latest'
-                        sh 'docker rmi $HARBOR_REGISTRY/$HARBOR_PROJECT/$APP_IMAGE_NAME:$APP_HASH-$PIPELINE_HASH'
+                        try {
+                            sh 'docker rmi $APP_IMAGE_NAME-$APP_HASH:latest'
+                            sh 'docker rmi $HARBOR_REGISTRY/$HARBOR_PROJECT/$APP_IMAGE_NAME:$APP_HASH-$PIPELINE_HASH'
                         } catch (err) {
-                        echo err.getMessage()
+                            echo err.getMessage()
                         }
                     }
                 }
              }
-         }
-           
+        } 
         stage('Database docker build') {
             steps {
+                echo "Building database image"
                 withCredentials([usernameColonPassword(credentialsId: 'ktorres-harbor-auth', variable: 'HARBOR-AUTH')]) {
                     script {
                         docker.build('$DB_IMAGE_NAME-$APP_HASH', '-f ./db/Dockerfile ./afs-labs-student')
@@ -65,11 +65,11 @@ pipeline {
                 always {
                     echo "Clean local $DB_IMAGE_NAME image"
                     script {
-                    try {
-                        sh 'docker rmi $DB_IMAGE_NAME-$APP_HASH:latest'
-                        sh 'docker rmi $HARBOR_REGISTRY/$HARBOR_PROJECT/$DB_IMAGE_NAME:$APP_HASH-$PIPELINE_HASH'
+                        try {
+                            sh 'docker rmi $DB_IMAGE_NAME-$APP_HASH:latest'
+                            sh 'docker rmi $HARBOR_REGISTRY/$HARBOR_PROJECT/$DB_IMAGE_NAME:$APP_HASH-$PIPELINE_HASH'
                         } catch (err) {
-                        echo err.getMessage()
+                            echo err.getMessage()
                         }
                     }
                 }
@@ -89,8 +89,8 @@ pipeline {
     post {
         cleanup {
             echo "Clean workspace"
-            sh 'docker system prune -f'
-            sh 'rm -rf .git ./*'
+                sh 'docker system prune -f'
+                sh 'rm -rf .git ./*'
         }
     }
 }
