@@ -24,7 +24,7 @@ pipeline {
         stage('Application docker build') {
             steps {
                 echo "Building application image"
-                withCredentials([usernameColonPassword(credentialsId: 'ktorres-harbor-auth, variable: 'HARBOR-AUTH')]) {
+                withCredentials([usernameColonPassword(credentialsId: 'ktorres-harbor-auth', variable: 'HARBOR-AUTH')]) {
                     script {
                         docker.build('$APP_IMAGE_NAME-$APP_HASH', '-f ./app/Dockerfile ./afs-labs-student')
                         docker.withRegistry('https://$HARBOR_REGISTRY', 'ktorres-harbor-auth') {
