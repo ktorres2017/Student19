@@ -34,8 +34,7 @@ pipeline {
                      } 
                   }
              }
-         }
-            post {
+              post {
                 always {
                     echo "Clean local $APP_IMAGE_NAME image"
                     script {
@@ -48,6 +47,8 @@ pipeline {
                     }
                 }
              }
+         }
+           
         stage('Database docker build') {
             steps {
                 withCredentials([usernameColonPassword(credentialsId: 'ktorres-harbor-auth', variable: 'HARBOR-AUTH')]) {
