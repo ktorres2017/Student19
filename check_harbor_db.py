@@ -25,12 +25,12 @@ for currentArgument, currentValue in arguments:
 try:
     ## Grab sha256 digest from Harbor project repository ##
     urlArtifact = 'https://' + registry + '/api/v2.0/projects/' + projectName + '/repositories/' + imageName + '/artifacts/'
-    digestResp = requests.get(urlArtifact, auth=(username, password))
+    digestResp = requests.get(urlArtifact, auth=(ktorres-harbor-auth))
     artifactReference = digestResp.json()[0]['digest']
 
     ## Check harbor DB commit hash in image tag ##
     urlArtifactHashTag = urlArtifact + artifactReference + '/tags'
-    hashTagResp = requests.get(urlArtifactHashTag, auth=(username, password))
+    hashTagResp = requests.get(urlArtifactHashTag, auth=(ktorres-harbor-auth))
     hashTag = hashTagResp.json()[0]['name']
     harborDbHash, harborPipelineHash = hashTag.split('-')
 
