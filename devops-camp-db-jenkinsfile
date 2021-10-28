@@ -17,7 +17,7 @@ pipeline {
                 dir('afs-labs-student') {
                     script{
                        env.DB_HASH = sh(script: 'git log --format=format:%h -1 --follow database/database.sql', returnStdout: true).trim()
-                       withCredentials([usernamePassword(credentialsId: 'student19>', usernameVariable: 'student19', passwordVariable: 'Student668!')]) {
+                       withCredentials([usernamePassword(credentialsId: 'ktorres-harbor-auth', usernameVariable: 'student19', passwordVariable: 'Student668!')]) {
                     script {
                         env.BUILD_DB = sh(script: 'python check_harbor_db.py -h $DB_HASH -i $DB_IMAGE_NAME -r $HARBOR_REGISTRY -p $HARBOR_PROJECT -c ${USERNAME}:${PASSWORD}', returnStdout: true).trim()
                     }
