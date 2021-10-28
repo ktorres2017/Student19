@@ -27,6 +27,33 @@ pipeline {
                 }
              }
         }
+        stage('DB changes: true') {
+            when {
+                environment name: 'BUILD_DB', value: 'true'
+            }
+            stages {
+                stage('Database docker build') {
+                    steps {
+                        // modify to build docker image and push to Harbor
+                    }
+                    post {
+                        // modify to clean local image in docker
+                    }
+                }
+                stage('Security scanning') {
+                    steps {
+                        // modify to scan database image
+                        echo "Security scanning..."
+                    }
+                }
+                stage('Deploy') {
+                    steps {
+                        // modify to deploy database
+                    }
+                }
+            }
+        }
+
     }
               post {
                 always {
